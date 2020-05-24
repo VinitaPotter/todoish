@@ -1,6 +1,48 @@
 const Todo = require("../models/todoModel");
 const _ = require("lodash");
 
+class APIFeatures {
+  constructor(Mquery, Rquery) {
+    (this.query = Mquery), (this.Rquery = Rquery);
+  }
+  filter() {
+    let filterQuery = _.pick(this.Rquery, ["priority", "status", "dueDate"]);
+
+    const queryString = JSON.stringify(filterQuery).replace(
+      /\b(gt|gte|lt|lte)\b/g,
+      (match) => `$${match}`
+    );
+    this.query = this.query.find(JSON.parse(queryString));
+    return this;
+  }
+  sort() {
+    if (this.Rquery.sort) {
+      let soryBy = this.Rquery.sort.split(",").join(" ");
+      this.query = this.query.sort(soryBy);
+    }
+    return this;
+  }
+
+  limitFields() {
+    if (this.Rquery.fields) {
+      let fields = this.Rquery.fields.split(",").join(" ");
+      this.query = this.query.select(fields);
+    } else {
+      this.query = this.query.select("-__v");
+    }
+    return this;
+  }
+  pagination() {
+    let pageNumber = this.Rquery.page * 1 || 1;
+    let pageLimit = this.Rquery.limit * 1 || 100;
+    let skip = (pageNumber - 1) * pageLimit;
+
+    this.query = this.query.skip(skip).limit(pageLimit);
+
+    return this;
+  }
+}
+
 exports.levelUp = (req, res, next) => {
   req.query.dueDate = { lte: new Date().toISOString() };
 
@@ -8,40 +50,12 @@ exports.levelUp = (req, res, next) => {
 };
 
 exports.getAllItems = async (req, res) => {
-  let filterQuery = _.pick(req.query, ["priority", "status", "dueDate"]);
-  console.log(req.query);
-
-  const queryString = JSON.stringify(filterQuery).replace(
-    /\b(gt|gte|lt|lte)\b/g,
-    (match) => `$${match}`
-  );
-  console.log(queryString);
-  let query = Todo.find(JSON.parse(queryString));
-
-  if (req.query.sort) {
-    let soryBy = req.query.sort.split(",").join(" ");
-    query = query.sort(soryBy);
-  }
-
-  if (req.query.fields) {
-    let fields = req.query.fields.split(",").join(" ");
-    query = query.select(fields);
-  } else {
-    query = query.select("-__v");
-  }
-
-  let pageNumber = req.query.page * 1 || 1;
-  let pageLimit = req.query.limit * 1 || 100;
-  let skip = (pageNumber - 1) * pageLimit;
-
-  query = query.skip(skip).limit(pageLimit);
-  if (req.query.page) {
-    let totalTodo = await Todo.countDocuments();
-    if (skip > totalTodo) {
-      throw new Error("This page does not exist");
-    }
-  }
-  let todos = await query;
+  const features = new APIFeatures(Todo.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .pagination();
+  let todos = await features.query;
   res.status(200).json({
     status: "Success",
     results: todos.length,
