@@ -14,18 +14,27 @@ const todoSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Todo", "Inprogress", "Done"],
+      enum: ["Todo", "Done"],
       default: "Todo",
     },
-    category: {
-      type: String,
+    level: {
+      type: Number,
+      default: 1,
     },
 
-    startDate: {
+    startTime: {
       type: Date,
       default: new Date(),
     },
-    reminder: Date,
+    endTime: {
+      type: Date,
+      default: () => new Date(+new Date() + 60 * 60 * 1000),
+    },
+    Location: String,
+    reminder: {
+      type: Boolean,
+      default: false,
+    },
     dueDate: Date,
   },
   {
@@ -35,9 +44,9 @@ const todoSchema = new mongoose.Schema(
   }
 );
 
-todoSchema.virtual("daysTillDuedate").get(function () {
-  const date1 = new Date(this.startDate);
-  const date2 = new Date(this.dueDate);
+todoSchema.virtual("duration").get(function () {
+  const date1 = new Date(this.startTime);
+  const date2 = new Date(this.endTime);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;

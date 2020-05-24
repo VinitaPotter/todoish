@@ -1,14 +1,21 @@
 const Todo = require("../models/todoModel");
 const _ = require("lodash");
 
+exports.levelUp = (req, res, next) => {
+  req.query.dueDate = { lte: new Date().toISOString() };
+
+  next();
+};
+
 exports.getAllItems = async (req, res) => {
-  let filterQuery = _.pick(req.query, ["priority", "status"]);
+  let filterQuery = _.pick(req.query, ["priority", "status", "dueDate"]);
+  console.log(req.query);
 
   const queryString = JSON.stringify(filterQuery).replace(
     /\b(gt|gte|lt|lte)\b/g,
     (match) => `$${match}`
   );
-
+  console.log(queryString);
   let query = Todo.find(JSON.parse(queryString));
 
   if (req.query.sort) {
@@ -16,13 +23,24 @@ exports.getAllItems = async (req, res) => {
     query = query.sort(soryBy);
   }
 
-  if (req.query.fiels) {
+  if (req.query.fields) {
     let fields = req.query.fields.split(",").join(" ");
     query = query.select(fields);
   } else {
     query = query.select("-__v");
   }
 
+  let pageNumber = req.query.page * 1 || 1;
+  let pageLimit = req.query.limit * 1 || 100;
+  let skip = (pageNumber - 1) * pageLimit;
+
+  query = query.skip(skip).limit(pageLimit);
+  if (req.query.page) {
+    let totalTodo = await Todo.countDocuments();
+    if (skip > totalTodo) {
+      throw new Error("This page does not exist");
+    }
+  }
   let todos = await query;
   res.status(200).json({
     status: "Success",

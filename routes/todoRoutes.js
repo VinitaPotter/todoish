@@ -3,6 +3,9 @@ const todoController = require("../controllers/todoController");
 const router = express.Router();
 
 router
+  .route("/pending-for-levelup")
+  .get(todoController.levelUp, todoController.getAllItems);
+router
   .route("/")
   .get(todoController.getAllItems)
   .post(todoController.createAnItem);
