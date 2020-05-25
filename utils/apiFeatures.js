@@ -1,3 +1,4 @@
+const _ = require("lodash");
 class APIFeatures {
   constructor(Mquery, Rquery) {
     (this.query = Mquery), (this.Rquery = Rquery);

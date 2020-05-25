@@ -1,6 +1,8 @@
 const Todo = require("../models/todoModel");
-const _ = require("lodash");
+
 const APIFeatures = require("./../utils/apiFeatures");
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("../utils/appErrors");
 
 exports.levelUp = (req, res, next) => {
   req.query.dueDate = { lte: new Date().toISOString() };
@@ -8,7 +10,7 @@ exports.levelUp = (req, res, next) => {
   next();
 };
 
-exports.getAllItems = async (req, res) => {
+exports.getAllItems = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Todo.find(), req.query)
     .filter()
     .sort()
@@ -22,9 +24,9 @@ exports.getAllItems = async (req, res) => {
       todos,
     },
   });
-};
+});
 
-exports.createAnItem = async (req, res) => {
+exports.createAnItem = catchAsync(async (req, res, next) => {
   let newTodo = await Todo.create(req.body);
   res.status(201).json({
     status: "Success",
@@ -32,56 +34,44 @@ exports.createAnItem = async (req, res) => {
       todo: newTodo,
     },
   });
-};
+});
 
-exports.getAnItem = async (req, res) => {
-  try {
-    let todo = await Todo.findOne({ _id: req.params.id });
-    res.status(200).json({
-      status: "Success",
-      data: {
-        todo: todo,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.getAnItem = catchAsync(async (req, res, next) => {
+  let todo = await Todo.findOne({ _id: req.params.id });
+  if (!todo) {
+    return next(new AppError("Nothing found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "Success",
+    data: {
+      todo: todo,
+    },
+  });
+});
 
-exports.updateAnItem = async (req, res) => {
-  try {
-    let todo = await Todo.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({
-      status: "Success",
-      data: {
-        todo: todo,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.updateAnItem = catchAsync(async (req, res, next) => {
+  let todo = await Todo.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!todo) {
+    return next(new AppError("Nothing found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "Success",
+    data: {
+      todo: todo,
+    },
+  });
+});
 
-exports.deleteAnItem = async (req, res) => {
-  try {
-    let todo = await Todo.findOneAndDelete(req.params.id, req.body);
-    res.status(200).json({
-      status: "Success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.deleteAnItem = catchAsync(async (req, res, next) => {
+  let todo = await Todo.findOneAndDelete(req.params.id, req.body);
+  if (!todo) {
+    return next(new AppError("Nothing found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "Success",
+    data: null,
+  });
+});
