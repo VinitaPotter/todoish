@@ -1,6 +1,9 @@
+const _ = require("lodash");
+
 const User = require("../models/userModel");
 const APIFeatures = require("./../utils/apiFeatures");
 const catchAsync = require("./../utils/catchAsync");
+const AppError = require("../utils/appErrors");
 
 exports.getAllUsers = catchAsync(async (req, res) => {
   const features = new APIFeatures(User.find(), req.query)
@@ -17,64 +20,38 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
-exports.createUser = async (req, res) => {
-  let userTodo = await User.create(req.body);
-  res.status(201).json({
+exports.getUser = catchAsync(async (req, res) => {
+  let user = await User.findOne({ _id: req.params.id });
+  res.status(200).json({
     status: "Success",
     data: {
-      user: userTodo,
+      user: user,
     },
   });
-};
+});
 
-exports.getUser = async (req, res) => {
-  try {
-    let user = await User.findOne({ _id: req.params.id });
-    res.status(200).json({
-      status: "Success",
-      data: {
-        user: user,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password) {
+    return next(new AppError("Can not update password here", 403));
   }
-};
 
-exports.updateUser = async (req, res) => {
-  try {
-    let user = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({
-      status: "Success",
-      data: {
-        user: user,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+  let userData = _.pick(req.body, ["email", "name"]);
+  let user = await User.findByIdAndUpdate(req.params.id, userData, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "Success",
+    data: {
+      user: user,
+    },
+  });
+});
 
-exports.deleteUser = async (req, res) => {
-  try {
-    let user = await User.findOneAndDelete(req.params.id, req.body);
-    res.status(200).json({
-      status: "Success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+exports.deactivate = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+  res.status(204).json({
+    status: "Success",
+    data: null,
+  });
+});

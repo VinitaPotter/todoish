@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "accountable"],
       default: "user",
     },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
     confirmPassword: {
       type: String,
       required: [true, "Please confirm your password"],
@@ -60,6 +65,11 @@ userSchema.pre("save", async function (next) {
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password") || this.isNew) return next();
   this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
+userSchema.pre(/^find/, async function (next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 
