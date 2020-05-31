@@ -8,12 +8,20 @@ router
   .get(todoController.levelUp, todoController.getAllItems);
 router
   .route("/")
-  .get(todoController.getAllItems)
+  .get(authController.protect, todoController.getAllItems)
   .post(todoController.createAnItem);
 router
   .route("/:id")
   .get(todoController.getAnItem)
-  .patch(todoController.updateAnItem)
-  .delete(todoController.deleteAnItem);
+  .patch(
+    authController.protect,
+    authController.restrictTo("user"),
+    todoController.updateAnItem
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo("user"),
+    todoController.deleteAnItem
+  );
 
 module.exports = router;
