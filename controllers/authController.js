@@ -2,6 +2,7 @@ const { promisify } = require("util");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
+const bcrypt = require("bcryptjs");
 
 const User = require("../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
@@ -148,6 +149,25 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+  await user.save();
+  let token = signToken(user._id);
+  res.status(201).json({
+    status: "Success!",
+    token,
+  });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  console.log(req.user);
+  const user = await User.findById(req.user._id).select("+password");
+
+  if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
+    return next(new AppError("The password your entered is not correct", 403));
+  }
+
+  user.password = req.body.password;
+  user.confirmPassword = req.body.confirmPassword;
+
   await user.save();
   let token = signToken(user._id);
   res.status(201).json({
