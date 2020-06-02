@@ -14,6 +14,28 @@ const signToken = (id) => {
   });
 };
 
+const sendToken = (user, statusCode, res) => {
+  let token = signToken(user._id);
+  const cookie_option = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRY * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookie_option.secure = true;
+
+  res.cookie("jwt", token, cookie_option);
+
+  user.password = undefined;
+  res.status(statusCode).json({
+    status: "Success!",
+    token,
+    data: {
+      user: user,
+    },
+  });
+};
+
 exports.signUp = catchAsync(async (req, res, next) => {
   let userData = _.pick(req.body, [
     "name",
@@ -22,15 +44,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     "confirmPassword",
   ]);
   const newUser = await User.create(userData);
-
-  let token = signToken(newUser._id);
-  res.status(201).json({
-    status: "Success!",
-    token,
-    data: {
-      user: newUser,
-    },
-  });
+  sendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -43,11 +57,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
-  let token = signToken(user._id);
-  res.status(200).json({
-    status: "Success",
-    token,
-  });
+  sendToken(user, 201, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -149,11 +159,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  let token = signToken(user._id);
-  res.status(201).json({
-    status: "Success!",
-    token,
-  });
+  sendToken(user, 201, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -168,9 +174,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
 
   await user.save();
-  let token = signToken(user._id);
-  res.status(201).json({
-    status: "Success!",
-    token,
-  });
+  sendToken(user, 201, res);
 });
