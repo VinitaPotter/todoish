@@ -8,13 +8,18 @@ router
   .get(todoController.levelUp, todoController.getAllItems);
 router
   .route("/")
-  .get(authController.protect, todoController.getAllItems)
+  .get(
+    authController.protect,
+    authController.access,
+    todoController.getAllItems
+  )
   .post(todoController.createAnItem);
 router
   .route("/:id")
   .get(todoController.getAnItem)
   .patch(
     authController.protect,
+    authController.access,
     authController.restrictTo("user"),
     todoController.updateAnItem
   )

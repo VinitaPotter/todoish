@@ -4,7 +4,13 @@ class APIFeatures {
     (this.query = Mquery), (this.Rquery = Rquery);
   }
   filter() {
-    let filterQuery = _.pick(this.Rquery, ["priority", "status", "dueDate"]);
+    console.log(this.Rquery);
+    let filterQuery = _.pick(this.Rquery, [
+      "priority",
+      "status",
+      "dueDate",
+      "owner",
+    ]);
 
     const queryString = JSON.stringify(filterQuery).replace(
       /\b(gt|gte|lt|lte)\b/g,

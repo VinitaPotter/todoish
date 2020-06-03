@@ -36,6 +36,11 @@ const todoSchema = new mongoose.Schema(
       default: false,
     },
     dueDate: Date,
+    owner: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     toJSON: { virtuals: true },
