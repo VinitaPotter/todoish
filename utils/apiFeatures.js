@@ -4,7 +4,6 @@ class APIFeatures {
     (this.query = Mquery), (this.Rquery = Rquery);
   }
   filter() {
-    console.log(this.Rquery);
     let filterQuery = _.pick(this.Rquery, [
       "priority",
       "status",

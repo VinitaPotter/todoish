@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const compression = require("compression");
 
 const dotenv = require("dotenv");
 const AppError = require("./utils/appErrors");
@@ -33,6 +34,8 @@ app.use(
     whitelist: ["priority", "status", "dueDate"],
   })
 );
+
+app.use(compression());
 
 app.use("/api/v1/todo", toDoRouter);
 app.use("/api/v1/user", userRouter);
