@@ -43,8 +43,52 @@ exports.signUp = catchAsync(async (req, res, next) => {
     "password",
     "confirmPassword",
   ]);
+
+  let code = Math.floor(1000 + Math.random() * 9000);
+  userData.confirmCode = code;
   const newUser = await User.create(userData);
-  sendToken(newUser, 201, res);
+
+  let user_data = _.pick(newUser, [
+    "created_at",
+    "email",
+    "id",
+    "name",
+    "role",
+    "updatedAt",
+  ]);
+  sendToken(user_data, 201, res);
+
+  const message = `Confirm your email! Use ${code}!`;
+
+  await sendEmail({
+    email: newUser.email,
+    subject: "Email confirmation for Todoish. (Valid for 15 mins)",
+    message: message,
+  });
+});
+
+exports.confirmEmail = catchAsync(async (req, res, next) => {
+  let { email, code } = req.body;
+  const user = await User.findOne({ email }).select("confirmCode");
+  if (!user) {
+    return next(new AppError("There is no user with that email id", 404));
+  } else {
+    console.log(user.confirmCode, code);
+    if (user.confirmCode == code) {
+      user.confirmedEmail = true;
+      user.confirmCode = undefined;
+      user.save();
+      res.status(200).json({
+        status: "Success!",
+        message: "Email Authenticated successfully",
+      });
+    } else {
+      res.status(401).json({
+        status: "Fail!",
+        message: "Count not validate email",
+      });
+    }
+  }
 });
 
 exports.login = catchAsync(async (req, res, next) => {
