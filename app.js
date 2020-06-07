@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cors = require("cors");
 const compression = require("compression");
 
 const dotenv = require("dotenv");
@@ -16,6 +17,9 @@ const toDoRouter = require("./routes/todoRoutes");
 const userRouter = require("./routes/userRoutes");
 
 dotenv.config({ path: "./config.env" });
+
+app.use(cors());
+app.options("*", cors());
 
 app.use(helmet());
 const limiter = rateLimit({
@@ -31,7 +35,7 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(
   hpp({
-    whitelist: ["priority", "status", "dueDate"],
+    whitelist: ["priority", "status", "dueDate", "email"],
   })
 );
 

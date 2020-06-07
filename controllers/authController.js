@@ -188,7 +188,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-  console.log(req.user);
   const user = await User.findById(req.user._id).select("+password");
 
   if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
@@ -200,4 +199,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   await user.save();
   sendToken(user, 201, res);
+});
+
+exports.isExisting = catchAsync(async (req, res) => {
+  let email = req.params.email;
+  const user = await User.findOne({ email }).select("name");
+  res.status(200).json({
+    status: user,
+  });
 });
