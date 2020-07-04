@@ -4,10 +4,14 @@
     <div
       class="lg:w-2/5 w-full m-auto fixed"
       style="top:50%;left:50%;transform: translate(-50%, -50%);"
-      v-on-clickaway="() => $emit('close')"
     >
       <div class="bg-white rounded-lg border p-6">
-        <p class="font-semibold text-center h-8 leading-10 text-2xl">Create a new item</p>
+        <div class="flex justify-between align-middle">
+          <p class="font-semibold text-center h-8 leading-10 text-2xl">Create a new item</p>
+          <p @click="$emit('close')">
+            <icon icon="times" />
+          </p>
+        </div>
 
         <div class="mt-8">
           <label class="text-gray-600" for="title">What do you want to do?</label>
@@ -206,15 +210,12 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { directive as onClickaway } from "vue-clickaway";
+
 import { Component, Vue } from "vue-property-decorator";
 import TodoService from "../../../services/todoService";
 
 @Component({
-  props: ["date"],
-  directives: {
-    onClickaway: onClickaway
-  }
+  props: ["date"]
 })
 export default class CreateNew extends Vue {
   todoService = new TodoService();

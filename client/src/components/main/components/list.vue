@@ -190,7 +190,6 @@
 // @ts-nocheck
 import { mapState } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
-import { directive as onClickaway } from "vue-clickaway";
 import calendar from "./calendar.vue";
 import TodoService from "../../../services/todoService";
 
@@ -198,10 +197,6 @@ import todo from "./todo.vue";
 import _ from "lodash";
 
 @Component({
-  directives: {
-    onClickaway: onClickaway
-  },
-
   computed: {
     ...mapState(["todos"]),
     groupedTodos() {
