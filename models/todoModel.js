@@ -14,7 +14,7 @@ const todoSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Todo", "Done"],
+      enum: ["Todo", "InProgress", "Done"],
       default: "Todo",
     },
     level: {
@@ -30,7 +30,7 @@ const todoSchema = new mongoose.Schema(
       type: Date,
       default: () => new Date(+new Date() + 60 * 60 * 1000),
     },
-    Location: String,
+    location: String,
     reminder: {
       type: Boolean,
       default: false,

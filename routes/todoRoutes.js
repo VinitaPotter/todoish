@@ -13,7 +13,7 @@ router
     authController.access,
     todoController.getAllItems
   )
-  .post(todoController.createAnItem);
+  .post(authController.protect, todoController.createAnItem);
 router
   .route("/:id")
   .get(todoController.getAnItem)

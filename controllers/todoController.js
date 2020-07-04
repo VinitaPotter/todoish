@@ -27,6 +27,9 @@ exports.getAllItems = catchAsync(async (req, res, next) => {
 });
 
 exports.createAnItem = catchAsync(async (req, res, next) => {
+  let owner = req.user.id;
+  req.body["owner"] = owner;
+
   let newTodo = await Todo.create(req.body);
   res.status(201).json({
     status: "Success",

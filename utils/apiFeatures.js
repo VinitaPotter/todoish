@@ -9,6 +9,7 @@ class APIFeatures {
       "status",
       "dueDate",
       "owner",
+      "location",
     ]);
 
     const queryString = JSON.stringify(filterQuery).replace(
