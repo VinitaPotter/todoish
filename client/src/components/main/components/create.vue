@@ -2,7 +2,7 @@
   <div class="absolute h-full w-screen top-0 z-50 bg-pink-100">
     <img src="../../../assets/images/create.svg" alt class="bg-fixed h-screen lg:visible invisible" />
     <div
-      class="lg:w-2/5 w-full m-auto fixed"
+      class="lg:w-2/5 w-full m-auto fixed overflow-x-auto h-screen has-slimscroll"
       style="top:50%;left:50%;transform: translate(-50%, -50%);"
     >
       <div class="bg-white rounded-lg border p-6">

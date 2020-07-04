@@ -4,10 +4,13 @@
     <div class="flex h-screen items-center">
       <div class="p-20">
         <h1 class="text-4xl font-semibold">Hello!</h1>
-        <h2 class="text-4xl font-semibold">{{stage == 1 ? 'Sign Up' : 'Confirm your email'}}</h2>
+        <h2
+          class="text-4xl font-semibold"
+        >{{stage == 1 ? 'Sign Up' : stage == 2? 'Confirm your email' : 'Welcome'}}</h2>
 
         <div v-if="stage==1">
           <input
+            v-focus
             autocomplete="true"
             class="bg-white focus:outline-none border-b border-red-400 rounded-sm py-2 px-4 block w-full appearance-none leading-normal mt-8"
             type="text"
@@ -73,7 +76,7 @@
           </p>
         </div>
 
-        <div v-else>
+        <div v-else-if="stage==2">
           <input
             maxlength="4"
             style="letter-spacing:4rem"
@@ -86,6 +89,15 @@
             @click="confirmEmail"
             class="bg-red-400 p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer"
           >Confirm</div>
+        </div>
+        <div v-else>
+          <p class="mt-10 text-gray-900">Welcome aboard! 🎉</p>
+          <p class="mt-2 text-gray-700">We hope you will have fun and productive time here!</p>
+
+          <p
+            class="mt-12 text-center font-semibold text-xl"
+          >Please wait while set things up for you!</p>
+          <p class="loading text-center text-pink-400"></p>
         </div>
       </div>
       <div class="lg:w-1/2 w-0 lg:visible invisible">
@@ -156,14 +168,19 @@ export default class SignUp extends Vue {
     const res = await AuthService.signUp({
       body: user
     });
-
-    if (res.status == "Error") {
+    console.log(res);
+    if (res && res.data && res.data.status == "Error") {
       return (this.showErrorMessage = res.message);
     } else {
       localStorage.setItem("jwt", res.token);
-      this.$store.dispatch("addAuthentication", res);
-      // this.stage = 2;
-      this.$router.push({ name: "Home" });
+      this.stage = 3;
+      setTimeout(() => {
+        this.$store.dispatch("addAuthentication", res);
+      }, 2000);
+
+      setTimeout(() => {
+        this.$router.push({ name: "Home" });
+      }, 4000);
     }
   }
   async confirmEmail() {
@@ -179,4 +196,27 @@ export default class SignUp extends Vue {
   }
 }
 </script>
+<style >
+.loading {
+  margin: 100px;
+  width: 36px;
+  height: 36px;
+  border: 4px solid #ed64a6;
+  border-bottom: 4px solid #fbb6ce;
+  border-radius: 100%;
+
+  animation: spin infinite 1s linear;
+  translatez: 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+</style>
 

@@ -25,7 +25,9 @@ export default class Todo extends Vue {
   async created() {
     const { data } = await TodoService.getAll();
 
-    this.$store.dispatch("addTodos", data.data.todos);
+    if (data) {
+      this.$store.dispatch("addTodos", data.data.todos);
+    }
   }
   createTodo(date) {
     (this.createnew = true), (this.defaultDate = date);

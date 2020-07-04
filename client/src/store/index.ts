@@ -42,6 +42,9 @@ export default new Vuex.Store({
       context.commit('ADD_USER', payload.data.user);
       context.commit('ADD_TOKEN', payload.token);
     },
+    addToken(context, payload) {
+      context.commit('ADD_TOKEN', payload);
+    },
     addTodo(context, payload) {
       context.commit('ADD_TODO', payload);
     },

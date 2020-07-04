@@ -21,7 +21,10 @@ import TodoScreen from "../components/main/todos.vue";
 export default class App extends Vue {
   authenticated = false;
   created() {
-    if (localStorage.getItem("jwt")) {
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt) {
+      this.$store.dispatch("addToken", jwt);
       this.authenticated = true;
     } else {
       if (this.$store.state.token) {
