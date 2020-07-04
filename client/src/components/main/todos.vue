@@ -1,7 +1,7 @@
 <template>
   <div>
-    <todo-list @create="create_new = true"></todo-list>
-    <create-todo @close="create_new = false" v-if="create_new"></create-todo>
+    <todo-list @create="createTodo"></todo-list>
+    <create-todo @close="createnew = false" v-if="createnew" :date="defaultDate"></create-todo>
   </div>
 </template>
 
@@ -19,10 +19,15 @@ import CreateTodo from "./components/create.vue";
   }
 })
 export default class Todo extends Vue {
-  create_new = false;
+  createnew = false;
+  defaultDate = null;
   async created() {
-    const res = await TodoService.getAll();
-    console.log(res);
+    const { data } = await TodoService.getAll();
+
+    this.$store.dispatch("addTodos", data.data.todos);
+  }
+  createTodo(date) {
+    (this.createnew = true), (this.defaultDate = date);
   }
 }
 </script>

@@ -10,21 +10,34 @@ class TodoService {
       .catch((err) => err);
   }
 
-  // static create(todo) {
-  //   return axios.post(url, {
-  //     todo,
-  //   });
-  // }
-
-  // static update(id, todo) {
-  //   return axios.patch(`${url}${id}`, {
-  //     todo,
-  //   });
-  // }
-
-  // static deleteTodo(id) {
-  //   return axios.delete(`${url}${id}`);
-  // }
+  async create({ req = {} }) {
+    return await https({
+      url: `${url}`,
+      method: "post",
+      data: req,
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  }
+  async update({ req = {} }) {
+    console.log(req);
+    return await https({
+      url: `${url}/${req.id}`,
+      method: "patch",
+      data: req,
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  }
+  async deleteTodo({ req = {} }) {
+    console.log(req);
+    return await https({
+      url: `${url}/${req.id}`,
+      method: "delete",
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  }
 }
 
 export default TodoService;

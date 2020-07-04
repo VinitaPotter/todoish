@@ -19,6 +19,7 @@
         <input
           class="bg-white focus:outline-none focus:border-red-500 border border-gray-300 rounded-lg h-10 appearance-none leading-normal px-2"
           type="email"
+          @keyup.enter="redirect()"
           v-model="email"
           placeholder="username@example.com"
         />
@@ -60,7 +61,7 @@ export default class Welcome extends Vue {
     }
     if (validated) {
       const res = await AuthService.isExisting({ email: this.email });
-      if (res.data.status) {
+      if (res.data && res.data.status) {
         console.log(res);
         this.$router.push({
           name: "login",

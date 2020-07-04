@@ -15,6 +15,14 @@ library.add(fas);
 
 Vue.component("icon", FontAwesomeIcon);
 
+Vue.directive('focus', {
+  // When the bound element is inserted into the DOM...
+  inserted: function (el) {
+    // Focus the element
+    el.focus()
+  }
+})
+
 Vue.config.productionTip = false;
 
 new Vue({

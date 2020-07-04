@@ -104,14 +104,14 @@ import AuthService from "../../services/authService";
 @Component({})
 export default class SignUp extends Vue {
   isHiddenPassword = true;
-  name: string = null;
-  email: string = null;
+  name = null;
+  email = null;
   password = null;
   confirmPassword = null;
-  showErrorMessage: string = null;
+  showErrorMessage = null;
   agreement = true;
   stage = 1;
-  code: number = null;
+  code = null;
 
   validateData() {
     this.showErrorMessage = null;

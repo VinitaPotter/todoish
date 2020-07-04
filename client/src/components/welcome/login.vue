@@ -33,6 +33,7 @@
             id="password"
             placeholder="Password"
             v-model="password"
+            @keyup.enter="login"
           />
           <icon
             :icon="isHiddenPassword ? 'eye' : 'eye-slash'"
