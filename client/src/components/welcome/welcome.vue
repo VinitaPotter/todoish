@@ -64,7 +64,6 @@ export default class Welcome extends Vue {
     if (validated) {
       const res = await AuthService.isExisting({ email: this.email });
       if (res.data && res.data.status) {
-        console.log(res);
         this.$router.push({
           name: "login",
           params: { user: this.email },
