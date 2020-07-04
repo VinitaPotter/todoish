@@ -1,4 +1,5 @@
 import https from "./https";
+import { method } from "lodash";
 const url = "/user";
 
 class AuthService {
@@ -37,6 +38,15 @@ class AuthService {
     })
       .then((res) => res.data)
       .catch((err) => err.response);
+  }
+  static async forgotPassword(req = {}) {
+    return await https({
+      url: `${url}/forgotPassword`,
+      method: "post",
+      data: req.body,
+    })
+      .then((res) => res.data)
+      .catch((err) => err.message);
   }
 }
 

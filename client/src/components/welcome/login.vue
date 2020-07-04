@@ -44,11 +44,16 @@
           />
         </div>
         <div class="flex my-4 justify-between">
-          <p class="text-gray-700">
+          <!-- <p class="text-gray-700">
             <input type="checkbox" name="remember" id="remember" class="mr-2" />
             <label for="remember">Remember me</label>
-          </p>
-          <p class="text-gray-700 cursor-pointer">Forgot Password?</p>
+          </p>-->
+          <p
+            @click="forgotPassword"
+            class="text-gray-700 cursor-pointer"
+            :title="[email? 'Click to get a link to reset password' : 'Enter email']"
+            :class="[email ? null : 'cursor-not-allowed']"
+          >Forgot Password?</p>
         </div>
         <div class="text-red-600 text-center mb-10">{{showErrorMessage}}</div>
         <div
@@ -98,6 +103,17 @@ export default class Login extends Vue {
       localStorage.setItem("jwt", res.token);
       this.$store.dispatch("addAuthentication", res);
       this.$router.push({ name: "Home" });
+    }
+  }
+  async forgotPassword() {
+    const res = await AuthService.forgotPassword({
+      body: {
+        email: this.email
+      }
+    });
+
+    if (res) {
+      alert("Please check your email");
     }
   }
 }

@@ -66,7 +66,7 @@
             @click="validateData"
             class="bg-red-400 p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer"
           >Sign Up</div>
-          <p class="text-gray-700 mt-4 text-center">
+          <p class="text-gray-700 mt-4 text-center" @click="$router.push({name: 'login'})">
             Already have an account?
             <span class="font-medium text-red-400 cursor-pointer">Click here</span>
           </p>
