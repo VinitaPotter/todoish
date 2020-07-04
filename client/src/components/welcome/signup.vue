@@ -1,3 +1,4 @@
+
 <template>
   <div class="block">
     <div class="flex h-screen items-center">
@@ -98,6 +99,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue } from "vue-property-decorator";
 import AuthService from "../../services/authService";
 

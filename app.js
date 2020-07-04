@@ -44,6 +44,14 @@ app.use(compression());
 app.use("/api/v1/todo", toDoRouter);
 app.use("/api/v1/user", userRouter);
 
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static(__dirname + "/public"));
+
+  app.get(/.*/, (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+  });
+}
+
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server! 👻`, 404));
 });

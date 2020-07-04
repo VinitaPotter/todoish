@@ -6,6 +6,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue } from "vue-property-decorator";
 import WelcomeScreen from "../components/welcome/welcome.vue";
 import TodoScreen from "../components/main/todos.vue";

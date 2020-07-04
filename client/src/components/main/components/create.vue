@@ -205,6 +205,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { directive as onClickaway } from "vue-clickaway";
 import { Component, Vue } from "vue-property-decorator";
 import TodoService from "../../../services/todoService";

@@ -7,6 +7,7 @@
 
 
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue } from "vue-property-decorator";
 import TodoService from "../../services/todoService";
 import TodoList from "./components/list.vue";

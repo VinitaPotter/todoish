@@ -113,6 +113,7 @@
   </div>
 </template>
 <script lang="ts">
+// @ts-nocheck
 import { Component, Vue } from "vue-property-decorator";
 import { directive as onClickaway } from "vue-clickaway";
 import TodoService from "../../../services/todoService";

@@ -68,6 +68,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { mapState } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
 import todo from "./todo.vue";
