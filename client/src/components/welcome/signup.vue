@@ -88,7 +88,7 @@
           >Confirm</div>
         </div>
       </div>
-      <div class="w-1/2">
+      <div class="lg:w-1/2 w-0 lg:visible invisible">
         <img
           src="../../assets/images/signup.jpg"
           alt="<a href='https://www.freepik.com/free-photos-vectors/technology'>Technology vector created by stories - www.freepik.com</a>"

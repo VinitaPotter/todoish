@@ -1,9 +1,9 @@
 <template>
-  <div class="absolute h-full w-full top-0 z-50 bg-pink-100">
-    <img src="../../../assets/images/create.svg" alt class="bg-fixed h-screen" />
+  <div class="absolute h-full w-screen top-0 z-50 bg-pink-100">
+    <img src="../../../assets/images/create.svg" alt class="bg-fixed h-screen lg:visible invisible" />
     <div
-      class="w-2/5 m-auto absolute"
-      style="top:50%;left:70%;transform: translate(-50%, -50%);"
+      class="lg:w-2/5 w-full m-auto fixed"
+      style="top:50%;left:50%;transform: translate(-50%, -50%);"
       v-on-clickaway="() => $emit('close')"
     >
       <div class="bg-white rounded-lg border p-6">

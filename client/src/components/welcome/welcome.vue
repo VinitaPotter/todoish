@@ -1,21 +1,21 @@
 <template>
-  <div class="bg-grey-300 mt-12">
-    <div class="flex justify-between mx-64">
-      <div class="text-xl font-semibold">Todoish</div>
+  <div class="bg-grey-300 mt-12 pl-8 lg:p-0">
+    <div class="lg:flex lg:justify-between lg:mx-64">
+      <div class="text-xl font-semibold lg:mb-0 mb-4">Todoish</div>
       <a
         title="Atomic Habits by James Clear"
-        class="bg-black h-10 rounded-lg px-3 pt-2 cursor-pointer text-white font-medium hover:bg-red-500"
+        class="bg-black h-10 rounded-lg px-3 py-2 cursor-pointer text-white font-medium hover:bg-red-500"
         href="https://jamesclear.com/atomic-habits"
         target="_blank"
       >Know more</a>
     </div>
-    <div class="flex justify-between mx-64">
+    <div class="lg:flex lg:justify-between lg:mx-64">
       <div class="mt-20">
         <h1 class="text-2xl font-medium mb-3">A todo list for habits</h1>
         <p class="text-gray-700 text-100">Small habits. Big impact!</p>
       </div>
 
-      <div class="flex mt-20">
+      <div class="lg:flex mt-20">
         <input
           class="bg-white focus:outline-none focus:border-red-500 border border-gray-300 rounded-lg h-10 appearance-none leading-normal px-2"
           type="email"
@@ -25,16 +25,17 @@
         />
         <div
           @click.once="redirect()"
-          class="submit h-10 bg-black w-10 block px-3 py-2 rounded-lg ml-4 hover:bg-red-500 hover:scale-110 cursor-pointer"
+          class="submit h-10 bg-black lg:w-10 w-40 mt-4 lg:my-0 block px-3 py-2 rounded-lg lg:ml-4 hover:bg-red-500 hover:scale-110 cursor-pointer"
           :class="{'cursor-wait' : loading}"
         >
+          <span class="text-white mr-10 lg:hidden">Continue</span>
           <icon icon="arrow-right" class="text-white" />
         </div>
       </div>
     </div>
-    <div class="flex justify-center">
+    <div class="lg:flex lg:justify-center">
       <img
-        class="w-4/5"
+        class="lg:w-4/5 w-screen"
         src="../../assets/images/welcome.jpg"
         alt="<a href='http://www.freepik.com/free-photos-vectors/music'> Music vector created by pch.vector - www.freepik.com</a>"
       />

@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <div class="flex h-screen items-center">
-      <div class="w-1/2">
+      <div class="lg:w-1/2 w-0 invisible lg:visible">
         <img
           src="../../assets/images/login.jpg"
           alt="https://www.freepik.com/free-photos-vectors/idea"

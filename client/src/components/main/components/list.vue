@@ -1,11 +1,11 @@
 <template>
   <div class="flex bg-white h-screen" @click.capture="closeDropdowns">
-    <div class="calendar w-2/5">
+    <div class="calendar lg:w-2/5 w-0 invisible lg:visible">
       <calendar @selected="filterDate = $event" />
     </div>
 
     <div
-      class="todos bg-pink-100 w-3/5 rounded-lg m-4 relative overflow-x-auto overflow-x-hidden has-slimscroll"
+      class="todos bg-pink-100 lg:w-3/5 w-screen rounded-lg m-4 relative overflow-x-auto overflow-x-hidden has-slimscroll"
     >
       <p
         v-if="filterDate"
@@ -56,12 +56,12 @@
                     @keyup.enter="editName = -1;update(todo)"
                     v-model="todo.name"
                     v-focus
-                    class="focus:outline-none w-48 mr-5"
+                    class="focus:outline-none lg:w-48 w-36 mr-5"
                   />
                   <p
                     v-else
                     @click="editName = todo.id"
-                    class="mr-5 cursor-pointer w-48 z-30 truncate"
+                    class="mr-5 cursor-pointer lg:w-48 w-36 z-30 truncate"
                     title="Edit name"
                   >
                     <span class="block">{{todo.name}}</span>
