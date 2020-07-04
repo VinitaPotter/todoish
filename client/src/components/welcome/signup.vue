@@ -162,7 +162,8 @@ export default class SignUp extends Vue {
     } else {
       localStorage.setItem("jwt", res.token);
       this.$store.dispatch("addAuthentication", res);
-      this.stage = 2;
+      // this.stage = 2;
+      this.$router.push({ name: "Home" });
     }
   }
   async confirmEmail() {
