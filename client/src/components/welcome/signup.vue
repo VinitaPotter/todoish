@@ -89,6 +89,10 @@
             @click="confirmEmail"
             class="bg-red-400 p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer"
           >Confirm</div>
+          <div
+            @click="$router.push({name: 'Home'})"
+            class="p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer text-gray-600"
+          >Skip for now</div>
         </div>
         <div v-else>
           <p class="mt-10 text-gray-900">Welcome aboard! 🎉</p>
@@ -168,19 +172,20 @@ export default class SignUp extends Vue {
     const res = await AuthService.signUp({
       body: user
     });
-    console.log(res);
+
     if (res && res.data && res.data.status == "Error") {
       return (this.showErrorMessage = res.message);
     } else {
-      localStorage.setItem("jwt", res.token);
-      this.stage = 3;
-      setTimeout(() => {
-        this.$store.dispatch("addAuthentication", res);
-      }, 2000);
+      this.stage = 2;
+      // localStorage.setItem("jwt", res.token);
+      // this.stage = 3;
+      // setTimeout(() => {
+      //   this.$store.dispatch("addAuthentication", res);
+      // }, 2000);
 
-      setTimeout(() => {
-        this.$router.push({ name: "Home" });
-      }, 4000);
+      // setTimeout(() => {
+      //   this.$router.push({ name: "Home" });
+      // }, 4000);
     }
   }
   async confirmEmail() {
