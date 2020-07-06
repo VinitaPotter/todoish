@@ -6,3 +6,6 @@ Postman collection with most basic functionality:
 https://documenter.getpostman.com/view/5539601/SztHWQ8w
 
 Hosted on Heroku: https://git.heroku.com/app-todoish.git
+
+
+Front end (WIP): https://app-todoish.herokuapp.com/
