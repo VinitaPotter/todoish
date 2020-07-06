@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const jwt = localStorage.getItem('jwt');
+const jwt = document.cookie.split('=')[1]
+
 
 export default axios.create({
     baseURL: '/api/v1',
