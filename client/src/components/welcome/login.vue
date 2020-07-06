@@ -101,7 +101,6 @@ export default class Login extends Vue {
     if (res.status == "Fail") {
       return (this.showErrorMessage = res.message);
     } else {
-      localStorage.setItem("jwt", res.token);
       this.$store.dispatch("addAuthentication", res);
       this.$router.push({ name: "Home" });
     }
