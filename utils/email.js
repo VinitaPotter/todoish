@@ -9,13 +9,13 @@ module.exports = class Email {
     this.url = url;
     this.from = `Vinita K <${process.env.EMAIL_FROM}>`;
   }
-  createTransport() {
-    if (process.env.NODE_ENV == "development") {
+  newTransport() {
+    if (process.env.NODE_ENV == "production") {
       return nodemailer.createTransport({
         service: "SendGrid",
         auth: {
           user: process.env.EMAIL_API_USERNAME,
-          password: process.env.EMAIL_API,
+          pass: process.env.EMAIL_API,
         },
       });
     }
@@ -30,7 +30,7 @@ module.exports = class Email {
     });
   }
   async send(template, subject) {
-    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+    const html = pug.renderFile(`${__dirname}/../views/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
       subject,
@@ -54,7 +54,7 @@ module.exports = class Email {
   async sendPasswordReset() {
     await this.send(
       "passwordReset",
-      "Your password reset token (valid for only 10 minutes)"
+      "Your password reset token (valid for only 15 minutes)"
     );
   }
 };

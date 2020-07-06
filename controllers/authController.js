@@ -6,7 +6,7 @@ const _ = require("lodash");
 const User = require("../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("../utils/appErrors");
-const sendEmail = require("../utils/email");
+const Email = require("../utils/email");
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -20,7 +20,7 @@ const sendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRY * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    httpOnly: false,
   };
   if (process.env.NODE_ENV === "production") cookie_option.secure = true;
 
@@ -56,15 +56,17 @@ exports.signUp = catchAsync(async (req, res, next) => {
     "role",
     "updatedAt",
   ]);
+
+  await new Email(newUser, code).sendWelcome();
   sendToken(user_data, 201, res);
 
-  const message = `Confirm your email! Use ${code}!`;
+  // const message = `Confirm your email! Use ${code}!`;
 
-  await sendEmail({
-    email: newUser.email,
-    subject: "Email confirmation for Todoish. (Valid for 15 mins)",
-    message: message,
-  });
+  // await sendEmail({
+  //   email: newUser.email,
+  //   subject: "Email confirmation for Todoish. (Valid for 15 mins)",
+  //   message: message,
+  // });
 });
 
 exports.confirmEmail = catchAsync(async (req, res, next) => {
@@ -183,14 +185,16 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetUrl = `${req.protocol}://${req.get(
     "host"
   )}/api/v1/user/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password? Use ${resetUrl} to reset your password!`;
+  // const message = `Forgot your password? Use ${resetUrl} to reset your password!`;
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Password Reset for Todoish. (Valid for 15 mins)",
-      message: message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: "Password Reset for Todoish. (Valid for 15 mins)",
+    //   message: message,
+    // });
+
+    await new Email(user, resetUrl).sendPasswordReset();
+
     res.status(200).json({
       status: "Success",
       message: "Token sent to email",
