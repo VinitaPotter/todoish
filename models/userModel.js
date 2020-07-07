@@ -50,7 +50,6 @@ const userSchema = new mongoose.Schema(
     confirmedEmail: {
       type: Boolean,
       default: false,
-      select: false,
     },
     confirmCode: {
       type: Number,

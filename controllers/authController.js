@@ -182,9 +182,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/user/resetPassword/${resetToken}`;
+  const resetUrl = `https://app-todoish.herokuapp.com/resetPassword/${resetToken}`;
   // const message = `Forgot your password? Use ${resetUrl} to reset your password!`;
   try {
     // await sendEmail({

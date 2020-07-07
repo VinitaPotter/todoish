@@ -20,8 +20,8 @@ router
   .route("/deactivate")
   .delete(authController.protect, userController.deactivate);
 
-router.route("/").get(authController.protect, userController.getAllUsers);
+// router.route("/").get(authController.protect, userController.getAllUsers);
 
-router.route("/:id").get(authController.protect, userController.getUser);
+router.route("/").get(authController.protect, userController.getUser);
 
 module.exports = router;
