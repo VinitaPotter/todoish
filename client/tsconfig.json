@@ -14,11 +14,13 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": ["webpack-env", "mocha", "chai"],
+    "skipLibCheck": true,
     "paths": {
       "@/*": ["src/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
+
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
