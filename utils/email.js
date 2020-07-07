@@ -5,7 +5,7 @@ const nodemailerSendgrid = require("nodemailer-sendgrid");
 
 module.exports = class Email {
   constructor(user, url) {
-    this.to = `<${user.name}> <${user.email}>`;
+    this.to = user.email;
     this.firstName = user.name.split(" ")[0];
     this.url = url;
     this.from = `Vinita K <${process.env.EMAIL_FROM}>`;
@@ -13,11 +13,21 @@ module.exports = class Email {
   newTransport() {
     if (process.env.NODE_ENV == "production") {
       return nodemailer.createTransport({
-        service: "SendGrid",
+        service: "gmail",
+        secure: false,
+        port: 25,
         auth: {
-          user: process.env.EMAIL_API_USERNAME,
-          pass: process.env.EMAIL_API,
+          user: process.env.EMAIL_FROM,
+          pass: process.env.EMAIL,
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
+        // service: "SendGrid",
+        // auth: {
+        //   user: process.env.EMAIL_API_USERNAME,
+        //   pass: process.env.EMAIL_API,
+        // },
       });
     }
 
@@ -48,8 +58,11 @@ module.exports = class Email {
 
     // 3) Create a transport and send email
     await this.newTransport().sendMail(mailOptions, (err, info) => {
-      console.log(info.envelope);
-      console.log(info.messageId);
+      if (err) {
+        return console.log(err);
+      }
+      console.log("The message was sent!");
+      console.log(info);
     });
   }
   async sendWelcome() {
