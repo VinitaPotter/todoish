@@ -10,7 +10,7 @@
       <div class="p-20">
         <h1 class="text-4xl font-semibold">Hello!</h1>
         <h2 class="text-4xl font-semibold">
-          Welcome back,
+          Welcome {{email ? 'back' : 'to Todoish'}},
           <span>{{$route.query && $route.query.user ? $route.query.user : null }}</span>
         </h2>
         <div v-if="currentUser">
@@ -58,8 +58,9 @@
         <div class="text-red-600 text-center mb-10">{{showErrorMessage}}</div>
         <div
           @click="login"
+          :class="[loading ? 'cursor-not-allowed': null]"
           class="bg-red-400 p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer"
-        >Login</div>
+        >{{loading ? 'loading...' : 'Login' }}</div>
         <p class="text-gray-700 mt-4">
           Don't have an account?
           <span class="font-medium text-red-400 cursor-pointer">Click here</span>
@@ -81,6 +82,7 @@ export default class Login extends Vue {
   password: string = null;
   showErrorMessage: string = null;
   currentUser = null;
+  loading = false;
 
   created() {
     if (this.$route.params.user) {
@@ -92,6 +94,7 @@ export default class Login extends Vue {
   }
 
   async login() {
+    this.loading = true;
     const res = await AuthService.login({
       body: {
         email: this.email,
@@ -99,10 +102,14 @@ export default class Login extends Vue {
       }
     });
     if (res.status == "Fail") {
+      this.loading = false;
       return (this.showErrorMessage = res.message);
     } else {
-      this.$store.dispatch("addAuthentication", res);
-      this.$router.push({ name: "Home" });
+      setTimeout(() => {
+        this.loading = false;
+
+        this.$router.push({ name: "Home" });
+      }, 4000);
     }
   }
   async forgotPassword() {

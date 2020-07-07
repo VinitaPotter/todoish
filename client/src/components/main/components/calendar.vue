@@ -36,6 +36,41 @@
       @click="updateSelection"
       class="cursor-pointer font-light inline mt-16 ml-16 border py-2 px-3 rounded-md hover:bg-red-400 text-black hover:text-white hover:font-semibold hover:shadow-md"
     >Clear filter</p>
+
+    <div class="fixed bottom-0 bg-white z-50 text-gray-600">
+      <p>
+        This project was created to learn and understand
+        <img
+          class="inline h-4 w-8"
+          title="NodeJs"
+          src="../../../assets/icons/nodejs.svg"
+          alt
+        />
+        <img
+          class="inline h-4 w-8"
+          title="TypeScript"
+          src="../../../assets/icons/typescript.svg"
+          alt
+        />
+        <img
+          class="inline h-4 w-4"
+          title="Tailwindcss"
+          src="../../../assets/icons/tailwindcss.svg"
+          alt
+        /> with the help of
+        <a
+          class="text-blue-500"
+          href="https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/"
+          target="_blank"
+        >this</a>
+        course by Jonas Schmedtmann for the backend part of it.
+        The source code for this can be found
+        <a
+          class="text-blue-500"
+          href="https://github.com/vinitaPotter/todoish"
+        >here</a>
+      </p>
+    </div>
   </div>
 </template>
 <script>

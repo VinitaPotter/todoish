@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../components/welcome/login.vue";
 import Signup from "../components/welcome/signup.vue";
+import Reset from "../components/welcome/reset.vue";
 
 
 Vue.use(VueRouter);
@@ -25,6 +26,12 @@ const routes: Array<RouteConfig> = [
     name: "signup",
 
     component: Signup
+  },
+  {
+    path: "/resetPassword/:id",
+    name: "reset",
+
+    component: Reset
   },
 ];
 

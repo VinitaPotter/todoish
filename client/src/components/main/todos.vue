@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="z-50 bg-red-200 text-red-900 w-full h-16 lg:h-8 text-center m-auto">
+      <p
+        class="font-medium"
+      >Your email is unverified. Please confirm you email for the same benefits as unverified emails 😝!</p>
+    </div>
     <todo-list @create="createTodo"></todo-list>
     <create-todo @close="createnew = false" v-if="createnew" :date="defaultDate"></create-todo>
   </div>

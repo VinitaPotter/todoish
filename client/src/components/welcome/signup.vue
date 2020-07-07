@@ -177,15 +177,6 @@ export default class SignUp extends Vue {
       return (this.showErrorMessage = res.message);
     } else {
       this.stage = 2;
-      // localStorage.setItem("jwt", res.token);
-      // this.stage = 3;
-      // setTimeout(() => {
-      //   this.$store.dispatch("addAuthentication", res);
-      // }, 2000);
-
-      // setTimeout(() => {
-      //   this.$router.push({ name: "Home" });
-      // }, 4000);
     }
   }
   async confirmEmail() {
@@ -195,8 +186,15 @@ export default class SignUp extends Vue {
         code: this.code
       }
     });
+
     if (res.status == "Success!") {
-      this.$router.push({ name: "Home" });
+      this.stage = 3;
+
+      setTimeout(() => {
+        this.$router.push({ name: "Home" });
+      }, 2000);
+    } else {
+      alert("Invalid Code. Please try again!");
     }
   }
 }

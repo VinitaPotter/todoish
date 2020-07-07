@@ -48,6 +48,22 @@ class AuthService {
       .then((res) => res.data)
       .catch((err) => err.message);
   }
+  static async getUser() {
+    return await https({
+      url: `${url}/`,
+    })
+      .then((res) => res.data)
+      .catch((err) => err.message);
+  }
+  static async reset(req = {}) {
+    return await https({
+      url: `${url}/resetPassword/${req.id}`,
+      method: "post",
+      data: req.body,
+    })
+      .then((res) => res.data)
+      .catch((err) => err.message);
+  }
 }
 
 export default AuthService;
