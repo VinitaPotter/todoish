@@ -107,9 +107,8 @@ export default class Login extends Vue {
     } else {
       setTimeout(() => {
         this.loading = false;
-
         this.$router.push({ name: "Home" });
-      }, 4000);
+      }, 2000);
     }
   }
   async forgotPassword() {

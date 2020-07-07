@@ -27,7 +27,7 @@ import CreateTodo from "./components/create.vue";
 export default class Todo extends Vue {
   createnew = false;
   defaultDate = null;
-  async created() {
+  async mounted() {
     const { data } = await TodoService.getAll();
 
     if (data) {

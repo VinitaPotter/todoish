@@ -120,7 +120,7 @@
                 <div
                   :class=" [todo.endTime ? isOverdue(todo.endTime) ? 'text-red-500' : 'text-dark' : 'text-gray-400']"
                   v-else
-                  class="w-32"
+                  class="w-32 invisible sm:visible"
                   @click="addDuedate = todo.id"
                 >{{todo.endTime ? new Date(todo.endTime).toLocaleString('default', {day: '2-digit', month: 'long', year: 'numeric'}) : 'Add duedate'}}</div>
 

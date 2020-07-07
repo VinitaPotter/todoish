@@ -22,19 +22,24 @@ import AuthService from "../services/authService";
 export default class App extends Vue {
   authenticated = false;
 
-  async created() {
+  created() {
     let jwt;
     if (document.cookie && document.cookie.split("=")[0] == "jwt") {
       jwt = document.cookie.split("=")[1];
     }
 
     if (jwt) {
-      const { data } = await AuthService.getUser();
-      this.$store.dispatch("addUser", data.user);
       this.authenticated = true;
     } else {
       this.authenticated = false;
     }
+  }
+  async mounted() {
+    const { data } = await AuthService.getUser();
+    if (data) {
+      this.$store.dispatch("addUser", data.user);
+    }
+    console.log(data);
   }
 }
 </script>
