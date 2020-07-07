@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 const pug = require("pug");
 const htmlToText = require("html-to-text");
-const nodemailerSendgrid = require("nodemailer-sendgrid");
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 
 module.exports = class Email {
   constructor(user, url) {
@@ -11,34 +12,46 @@ module.exports = class Email {
     this.from = `Vinita K <${process.env.EMAIL_FROM}>`;
   }
   newTransport() {
-    if (process.env.NODE_ENV == "production") {
-      return nodemailer.createTransport({
-        service: "gmail",
-        secure: false,
-        port: 25,
-        auth: {
-          user: process.env.EMAIL_FROM,
-          pass: process.env.EMAIL,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-        // service: "SendGrid",
-        // auth: {
-        //   user: process.env.EMAIL_API_USERNAME,
-        //   pass: process.env.EMAIL_API,
-        // },
-      });
-    }
+    const oauth2Client = new OAuth2(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      "https://developers.google.com/oauthplayground"
+    );
 
-    return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+    oauth2Client.setCredentials({
+      refresh_token: process.env.REFRESH_TOKEN,
     });
+    const accessToken = oauth2Client.getAccessToken();
+    // if (process.env.NODE_ENV == "production") {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL_FROM,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: accessToken,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+      // service: "SendGrid",
+      // auth: {
+      //   user: process.env.EMAIL_API_USERNAME,
+      //   pass: process.env.EMAIL_API,
+      // },
+    });
+    // }
+
+    // return nodemailer.createTransport({
+    //   host: process.env.EMAIL_HOST,
+    //   port: process.env.EMAIL_PORT,
+    //   auth: {
+    //     user: process.env.EMAIL_USERNAME,
+    //     pass: process.env.EMAIL_PASSWORD,
+    //   },
+    // });
   }
   async send(template, subject) {
     const html = pug.renderFile(`${__dirname}/../views/${template}.pug`, {
