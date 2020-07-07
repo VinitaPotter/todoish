@@ -6,9 +6,11 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import "./assets/style/tailwind.css";
-
+/* tslint:disable:no-var-requires */
 import { library } from "@fortawesome/fontawesome-svg-core";
+/* tslint:disable:no-var-requires */
 import { fas } from "@fortawesome/free-solid-svg-icons";
+/* tslint:disable:no-var-requires */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 
