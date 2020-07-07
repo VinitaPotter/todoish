@@ -1,35 +1,24 @@
 const nodemailer = require("nodemailer");
 const pug = require("pug");
 const htmlToText = require("html-to-text");
-const sgMail = require("@sendgrid/mail");
+const nodemailerSendgrid = require("nodemailer-sendgrid");
 
 module.exports = class Email {
   constructor(user, url) {
-    this.to = user.email;
+    this.to = `<${user.name}> <${user.email}>`;
     this.firstName = user.name.split(" ")[0];
     this.url = url;
     this.from = `Vinita K <${process.env.EMAIL_FROM}>`;
   }
   newTransport() {
     if (process.env.NODE_ENV == "production") {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      const msg = {
-        to: this.to,
-        from: this.from,
-        subject,
-        html,
-        text: htmlToText.fromString(html),
-      };
-      sgMail.send(msg);
-      // return nodemailer.createTransport({
-      //   sendmail: true,
-      //   host: "smtp.sendgrid.net",
-      //   port: process.env.EMAIL_PORT,
-      //   auth: {
-      //     user: process.env.EMAIL_API_USERNAME,
-      //     pass: process.env.EMAIL_API,
-      //   },
-      // });
+      return nodemailer.createTransport({
+        service: "SendGrid",
+        auth: {
+          user: process.env.EMAIL_API_USERNAME,
+          pass: process.env.EMAIL_API,
+        },
+      });
     }
 
     return nodemailer.createTransport({
