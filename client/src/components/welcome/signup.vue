@@ -90,7 +90,7 @@
             class="bg-red-400 p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer"
           >Confirm</div>
           <div
-            @click="$router.push({name: 'Home'})"
+            @click="$router.push({name: 'login'})"
             class="p-4 m-auto text-center rounded-md font-medium tracking-wide cursor-pointer text-gray-600"
           >Skip for now</div>
         </div>
