@@ -12,6 +12,7 @@ module.exports = class Email {
   newTransport() {
     if (process.env.NODE_ENV == "production") {
       return nodemailer.createTransport({
+        sendmail: true,
         host: "smtp.sendgrid.net",
         port: process.env.EMAIL_PORT,
         auth: {
@@ -47,7 +48,10 @@ module.exports = class Email {
     };
 
     // 3) Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    await this.newTransport().sendMail(mailOptions, (err, info) => {
+      console.log(info.envelope);
+      console.log(info.messageId);
+    });
   }
   async sendWelcome() {
     await this.send("welcome", "Welcome to Todoish!");
