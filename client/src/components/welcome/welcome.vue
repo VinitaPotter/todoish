@@ -3,11 +3,11 @@
     <div class="lg:flex lg:justify-between lg:mx-64">
       <div class="text-xl font-semibold lg:mb-0 mb-4">Todoish</div>
       <a
-        title="Atomic Habits by James Clear"
+        title="Source code"
         class="bg-black h-10 rounded-lg px-3 py-2 cursor-pointer text-white font-medium hover:bg-red-500"
-        href="https://jamesclear.com/atomic-habits"
+        href="https://github.com/VinitaPotter/todoish"
         target="_blank"
-      >Know more</a>
+      >Github</a>
     </div>
     <div class="lg:flex lg:justify-between lg:mx-64">
       <div class="mt-20">
@@ -15,21 +15,24 @@
         <p class="text-gray-700 text-100">Small habits. Big impact!</p>
       </div>
 
-      <div class="lg:flex mt-20">
-        <input
-          class="bg-white focus:outline-none focus:border-red-500 border border-gray-300 rounded-lg h-10 appearance-none leading-normal px-2"
-          type="email"
-          @keyup.enter="redirect()"
-          v-model="email"
-          placeholder="username@example.com"
-        />
-        <div
-          @click.once="redirect()"
-          class="submit h-10 bg-black lg:w-10 w-40 mt-4 lg:my-0 block px-3 py-2 rounded-lg lg:ml-4 hover:bg-red-500 hover:scale-110 cursor-pointer"
-          :class="{'cursor-wait' : loading}"
-        >
-          <span class="text-white mr-10 lg:hidden">Continue</span>
-          <icon icon="arrow-right" class="text-white" />
+      <div class="mt-20">
+        <p class="text-gray-700 text-100 pl-1">Create an account or login to continue!</p>
+        <div class="lg:flex mt-2">
+          <input
+            class="bg-white focus:outline-none focus:border-red-500 border border-gray-300 rounded-lg h-10 appearance-none leading-normal px-2"
+            type="email"
+            @keyup.enter="redirect()"
+            v-model="email"
+            placeholder="username@example.com"
+          />
+          <div
+            @click.once="redirect()"
+            class="submit h-10 bg-black lg:w-10 w-40 mt-4 lg:my-0 block px-3 py-2 rounded-lg lg:ml-4 hover:bg-red-500 hover:scale-110 cursor-pointer"
+            :class="{'cursor-wait' : loading}"
+          >
+            <span class="text-white mr-10 lg:hidden">Continue</span>
+            <icon icon="arrow-right" class="text-white" />
+          </div>
         </div>
       </div>
     </div>
