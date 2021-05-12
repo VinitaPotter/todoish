@@ -30,7 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.10",
-    "nodemailer": "^6.4.8",
+    "nodemailer": "^6.4.16",
     "nodemailer-sendgrid": "^1.0.3",
     "pug": "^3.0.0",
     "xss-clean": "^0.1.1"
